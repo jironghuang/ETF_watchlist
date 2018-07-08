@@ -6,10 +6,12 @@
 
 # gs_ls()
 
-gs_auth(token = "/home/jirong/Desktop/googlesheets_token.rds")
+#Obtain the API KEY for google 
+rsd_file = Sys.getenv("GOOGLESHEET")
+gs_auth(token = rsd_file)
 ## and you're back in business, using the same old token
 ## if you want silence re: token loading, use this instead
-suppressMessages(gs_auth(token = "/home/jirong/Desktop/googlesheets_token.rds", verbose = FALSE))
+suppressMessages(gs_auth(token = rsd_file, verbose = FALSE))
 
 dat = gs_title("Investment")
 gs_ws_ls(dat)   #tab names
