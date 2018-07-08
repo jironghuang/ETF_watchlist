@@ -8,7 +8,7 @@ check.packages <- function(pkg){
 }
 
 # Usage example
-packages<-c("stringr", "RCurl", "parallel", "plyr", "googlesheets")
+packages<-c("stringr", "RCurl", "parallel", "plyr", "googlesheets", "compiler")
 check.packages(packages)
 
 
@@ -75,8 +75,11 @@ crawl_data = function(i){
   return(data)
 }
 
+#Compile the function to increase the speed
+cmp_crawl_data = cmpfun(crawl_data)
+
 #crawling the data with multi-core
-finance_data = mclapply(1: nrow(yahoo_list), crawl_data, mc.cores = detectCores())
+finance_data = mclapply(1: nrow(yahoo_list), cmp_crawl_data, mc.cores = detectCores())
 yahoo_list = rbind.fill(finance_data)
 
 #Functions for formatting string
