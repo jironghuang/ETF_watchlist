@@ -1,3 +1,8 @@
+#Yahoo finance crawler
+#Run this in bash shell 
+# cd Desktop/github/ETF_watchlist/
+# Rscript ./R/crawl_yahoo.R
+
 # check.packages function: install and load multiple R packages.
 # Check to see if packages are installed. Install them if they are not, then load them into the R session.
 check.packages <- function(pkg){
@@ -11,9 +16,10 @@ check.packages <- function(pkg){
 packages<-c("stringr", "RCurl", "parallel", "plyr", "googlesheets", "compiler")
 check.packages(packages)
 
-
 #loading data
-yahoo_list = read.csv("./Input/yahoo_prices.csv",stringsAsFactors = FALSE)
+yahoo_list = read.csv("Input/yahoo_prices.csv",stringsAsFactors = FALSE)
+# yahoo_list = yahoo_list[-grep("\\.L", yahoo_list$Ticker),]
+
 yahoo_list$link = paste("https://finance.yahoo.com/quote/",yahoo_list$Ticker,"?p=",yahoo_list$Ticker,sep = "")
 yahoo_list$fifty_two_weekrange = ""
 yahoo_list$fifty_two_weekhigh = ""
@@ -105,10 +111,10 @@ yahoo_list$Price = as.numeric(gsub(",","",yahoo_list$Price))
 yahoo_list$Change_fr_52_week_high = (yahoo_list$Price - yahoo_list$fifty_two_weekhigh)/yahoo_list$fifty_two_weekhigh
 yahoo_list$Change_fr_52_week_low = (yahoo_list$Price - yahoo_list$fifty_two_weeklow)/yahoo_list$fifty_two_weeklow
 
-write.csv(yahoo_list,"./Output/yahoo_crawled_data.csv",row.names = FALSE)
+write.csv(yahoo_list,"Output/yahoo_crawled_data.csv",row.names = FALSE)
 
 #Uploading data in googlesheet
-source("./R/auth.R")  #authorization in googlesheet (dont reveal your .rds file. Store in a local location, preferably the path as a system variable)
+source("R/auth.R")  #authorization in googlesheet (dont reveal your .rds file. Store in a local location, preferably the path as a system variable)
 
 yahoo_list = arrange(yahoo_list,Change_fr_52_week_high)
 
