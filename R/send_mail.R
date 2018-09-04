@@ -17,16 +17,17 @@ msg <- paste("Hey there, I'm sending this ETF watchlist that is updated as of ",
 sender <- "jironghuang88@gmail.com"
 # Define who should get your email
 recipients <- emails
-              # Send your email with the send.mail function
-              send.mail(from = sender,
-                        to = recipients,
-                        subject = "ETF Watchlist",
-                        body = msg,
-                        attach.files = "./Output/yahoo_crawled_data.csv",
-                        smtp = list(host.name = "smtp.gmail.com", port = 587,
-                                    user.name = "jironghuang88@gmail.com",
-                                    passwd = Sys.getenv("mail"), ssl = TRUE),
-                        authenticate = TRUE,
-                        send = TRUE)
-              
+# Send your email with the send.mail function
+send.mail(from = sender,
+          to = c("jironghuang88@gmail.com"),
+          bcc = recipients,
+          subject = "ETF Watchlist",
+          body = msg,
+          attach.files = "./Output/yahoo_crawled_data.csv",
+          smtp = list(host.name = "smtp.gmail.com", port = 587,
+                      user.name = "jironghuang88@gmail.com",
+                      passwd = Sys.getenv("mail"), ssl = TRUE),
+          authenticate = TRUE,
+          send = TRUE)
+
               # JAVA_HOME /usr/lib/jvm/java-8-oracle             
