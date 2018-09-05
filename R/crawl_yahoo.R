@@ -112,12 +112,12 @@ yahoo_list$Price = as.numeric(gsub(",","",yahoo_list$Price))
 yahoo_list$Change_fr_52_week_high = (yahoo_list$Price - yahoo_list$fifty_two_weekhigh)/yahoo_list$fifty_two_weekhigh
 yahoo_list$Change_fr_52_week_low = (yahoo_list$Price - yahoo_list$fifty_two_weeklow)/yahoo_list$fifty_two_weeklow
 
+yahoo_list = arrange(yahoo_list,Change_fr_52_week_high)
+
 write.csv(yahoo_list,"Output/yahoo_crawled_data.csv",row.names = FALSE)
 
 #Uploading data in googlesheet
 source("R/auth.R")  #authorization in googlesheet (dont reveal your .rds file. Store in a local location, preferably the path as a system variable)
-
-yahoo_list = arrange(yahoo_list,Change_fr_52_week_high)
 
 dat <- dat %>%
   gs_edit_cells(ws = "Yahoo", input = yahoo_list, trim = TRUE)
