@@ -122,5 +122,14 @@ source("R/auth.R")  #authorization in googlesheet (dont reveal your .rds file. S
 dat <- dat %>%
   gs_edit_cells(ws = "Yahoo", input = yahoo_list, trim = TRUE)
 
-source("R/send_mail.R")
+#Send it every monday only
+if(strsplit(date(), " ")[[1]][1] == "Sun"){
+  source("R/send_mail.R")  
+}
+
+
+
+
+
+
 
