@@ -123,7 +123,7 @@ dat <- dat %>%
   gs_edit_cells(ws = "Yahoo", input = yahoo_list, trim = TRUE)
 
 #Send it every monday only
-if(strsplit(date(), " ")[[1]][1] == "Sun"){
+if(strsplit(date(), " ")[[1]][1] == "Sat"){
   source("R/send_mail.R")  
 }
 
