@@ -14,7 +14,7 @@ check.packages <- function(pkg){
 }
 
 # Usage example
-packages<-c("stringr", "RCurl", "parallel", "plyr", "googlesheets", "compiler")
+packages<-c("stringr", "RCurl", "parallel", "plyr", "googlesheets", "compiler", "rPython")
 check.packages(packages)
 
 #loading data
@@ -77,7 +77,10 @@ crawl_data = function(i){
       }
     } #if length of html more than 1
     
-  }, error=function(e){})
+  }, error=function(e){
+    print("Error in crawling")
+    # write.csv(cars, "test.csv")   #You can do things in exception handling
+  })#try catch
   
   return(data)
 }
@@ -86,6 +89,7 @@ crawl_data = function(i){
 cmp_crawl_data = cmpfun(crawl_data)
 
 #crawling the data with multi-core
+#finance_data = lapply(2: nrow(yahoo_list), cmp_crawl_data)
 finance_data = mclapply(1: nrow(yahoo_list), cmp_crawl_data, mc.cores = detectCores())
 yahoo_list = rbind.fill(finance_data)
 
@@ -124,7 +128,8 @@ dat <- dat %>%
 
 #Send it every monday only
 if(strsplit(date(), " ")[[1]][1] == "Sat"){
-  source("R/send_mail.R")  
+  #source("R/send_mail.R") 
+  python.load("R/send_email.py")
 }
 
 
