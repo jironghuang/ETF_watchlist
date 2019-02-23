@@ -80,7 +80,11 @@ crawl_data = function(i){
   }, error=function(e){
     print("Error in crawling")
     # write.csv(cars, "test.csv")   #You can do things in exception handling
-  })#try catch
+  }, finally = {
+    print(paste0("Oh well index ", i, " went wrong"))
+  }
+  
+  )#try catch
   
   return(data)
 }
