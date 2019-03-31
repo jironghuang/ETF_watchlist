@@ -37,24 +37,49 @@ crawl_data = function(i){
     
     if(length(html)>=1){
       
-      if(grepl("Summary for ",html) == TRUE){
-        name_h = str_locate(html,'Summary for ')[1,2]
+      # if(grepl("Summary for ",html) == TRUE){
+      #   name_h = str_locate(html,'Summary for ')[1,2]
+      #   name = substring(html, first = name_h-100, last = name_h+100)  
+      #   name = substring(name,
+      #                    first = str_locate(name,"Summary for ")[1,2]+1,
+      #                    last = str_locate(name,"Yahoo Finance")[1,1]-4)      
+      #   data$Name = name
+      # }
+      
+      if(grepl("title ",html) == TRUE){
+        name_h = str_locate(html,'title')[1,2]
         name = substring(html, first = name_h-100, last = name_h+100)  
         name = substring(name,
-                         first = str_locate(name,"Summary for ")[1,2]+1,
-                         last = str_locate(name,"Yahoo Finance")[1,1]-4)      
+                         first = str_locate(name,"title")[1,2]+2,
+                         last = str_locate(name,"Stock Price")[1,1]-2)      
         data$Name = name
-      }
+      }      
       
-      if(grepl("data-reactid=\"35\">",html) == TRUE){
+      #Use previous clos if this breaks in future
+      if(grepl("data-reactid=\"34\">",html) == TRUE){
         #In numeric
-        price_h = str_locate_all(html,'data-reactid=\"35\">')[[1]][2,2]
-        price = substring(html, first = price_h+1, last = price_h+100)  
+        price_h = str_locate_all(html,'data-reactid=\"34\">')[[1]][4,2]
+        price = substring(html, first = price_h+1, last = price_h+100)
         price = substring(price,
                           first = 1,
-                          last = str_locate(price,"<")[1,1]-1)      
+                          last = str_locate(price,"<")[1,1]-1)
         data$Price = price
       }
+      
+      # #Use previous clos if this breaks in future
+      # if(grepl('data-test="PREV_CLOSE-value"',html) == TRUE){
+      #   #In numeric
+      #   price_h = str_locate(html,'data-test="PREV_CLOSE-value"')[1,2]
+      #   price = substring(html, first = price_h+1, last = price_h+100)  
+      #   price = substring(price,
+      #                     first = 1,
+      #                     last = str_locate(price,"<")[1,1]-1)
+      #   price = substring(price,
+      #                  first = str_locate(yahoo_list$P.E[i],"<!-- react-text: 101 -->")[1,2]+1,
+      #                  last = str_locate(yahoo_list$P.E[i],"<!-- /react-text --></span>")[1,1]-1)          
+      #   
+      #   data$Price = price
+      # }      
       
       if(grepl('data-test="PE_RATIO-value"',html) == TRUE){
         pe_h = str_locate(html,'data-test="PE_RATIO-value"')[1,2]
@@ -133,7 +158,9 @@ dat <- dat %>%
 #Send it every monday only
 if(strsplit(date(), " ")[[1]][1] == "Sat"){
   #source("R/send_mail.R") 
-  python.load("R/send_email.py")
+  setwd('..')
+  setwd('..')
+  python.load("send_email.py")
 }
 
 
